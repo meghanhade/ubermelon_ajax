@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block body %}
+<h2>Top Selling Melons</h2>
+
+<div id="melon-list">
+    {% for melon in melon_list %}
+    <div class="melon-summary well">
+        <h2><a href="/melon/{{melon.id}}">{{melon.common_name}}</a></h2>
+        <a href="/melon/{{melon.id}}">
+        <img src="{{melon.imgurl}}">
+        </a>
+        <h3>{{melon.price_str()}}</h3>
+        <a class="btn btn-primary" href="/melon/{{melon.id}}">Details</a>
+    </div>
+    {% endfor %}
+</div>
+
+
+<div id="cart">
+    <div id="cart-target">
+    </div>
+    <a href="" id="cart-close" class="btn btn-xs btn-default">Close</a>
+</div>
+
+
+<div id="blackout-screen">
+<div id="promotion" class="jumbotron">
+<h1>Hot Deal! All Watermelons on sale, 50% off!</h1>
+<a href="" id="close-promotion">Close this window</a>
+</div>
+</div>
+
+<script type="text/javascript">
+function hideBlackoutScreen() {
+    $("#blackout-screen").hide();
+    return false;
+}
+
+function showCartSummary(data) {
+    $("#cart-target").html(data);
+    $("#cart").show();
+    return false;
+}
+
+function hideCartSummary() {
+    $("#cart").hide();
+    return false;
+}
+
+function getCartContents() {
+    $.get("/cart_items", showCartSummary);
+}
+
+function main () {
+    $("#close-promotion").click(hideBlackoutScreen);
+    $("#cart-link").mouseover(getCartContents);
+    $("#cart-close").click(hideCartSummary);
+}
+
+$(main);
+</script>
+
+
+
+{% endblock %}

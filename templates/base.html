@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/static/css/style.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <img src="/static/img/ubermelonsmall.png"><a class="navbar-brand" href="/">Ubermelon</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/cart" id="cart-link"><img class="melon-cart" src="/static/img/watermelon.png"> My Melon Cart</a></li>
+                        <li><a href="/login">Log In</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <ul class="flashes">
+                <li>{{message}}</li>
+            </ul>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% block body %}{% endblock %}
+            <div id="cart">
+                <div id="cart-target">
+                </div>
+                <a href="" id="cart-close" class="btn btn-xs btn-default">Close</a>
+            </div>
+
+<script type="text/javascript">
+    function hideBlackoutScreen() {
+        $("#blackout-screen").hide();
+        return false;
+    }
+
+    function showCartSummary(data) {
+        $("#cart-target").html(data);
+        $("#cart").show();
+        return false;
+    }
+
+    function hideCartSummary() {
+        $("#cart").hide();
+        return false;
+    }
+
+    function getCartContents() {
+        $.get("/cart_items", showCartSummary);
+    }
+
+    function main () {
+        $("#close-promotion").click(hideBlackoutScreen);
+        $("#cart-link").mouseover(getCartContents);
+        $("#cart-close").click(hideCartSummary);
+    }
+
+    $(main);
+</script>
+    </body>
+</html>
